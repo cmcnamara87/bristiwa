@@ -1,0 +1,46 @@
+<ion-view view-title="Dashboard">
+    <ion-content class="padding">
+
+        <!--<pre>-->
+            <!--{{ vm.events | json }}-->
+        <!--</pre>-->
+        <td-cards>
+            <td-card ng-repeat="event in vm.events" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
+                <h3>{{ event.title }}</h3>
+                <div class="image" ng-controller="CardCtrl">
+                    <div class="no-text">NOPE</div>
+
+                    <img ng-src="{{event.image}}">
+                    <div class="yes-text">LIKE</div>
+                </div>
+            </td-card>
+        </td-cards>
+
+
+        <!--{{ vm.hello }}-->
+
+        <!--<div class="list card" ng-repeat="event in vm.events">-->
+            <!--<div class="item item-divider">{{ event.title }}</div>-->
+            <!--<div class="item item-body">-->
+
+
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="list card">-->
+            <!--<div class="item item-divider">Health</div>-->
+            <!--<div class="item item-body">-->
+                <!--<div>-->
+                    <!--You ate an apple today!-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="list card">-->
+            <!--<div class="item item-divider">Upcoming</div>-->
+            <!--<div class="item item-body">-->
+                <!--<div>-->
+                    <!--You have <b>29</b> meetings on your calendar tomorrow.-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </ion-content>
+</ion-view>
