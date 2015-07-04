@@ -8,7 +8,7 @@
  * Controller of the datenightApp
  */
 angular.module('datenightApp')
-    .controller('SettingCtrl', function($scope, eventsService) {
+    .controller('SettingCtrl', function($scope, eventsService, calendarService) {
         $scope.awesomeThings = [
             'HTML5 Boilerplate',
             'AngularJS',
@@ -24,6 +24,9 @@ angular.module('datenightApp')
                 return;
             }
             eventsService.setRating(0);
-
         };
+
+        $scope.clearAll = function() {
+        	calendarService.clearAll();
+        }
     });

@@ -38,7 +38,8 @@ angular.module('datenightApp')
             events: events,
             rejectedEvents: rejectedEvents,
             addEvent: addEvent,
-            rejectEvent: rejectEvent
+            rejectEvent: rejectEvent,
+            clearAll: clearAll
         };
 
         return calendarService;
@@ -51,8 +52,22 @@ angular.module('datenightApp')
         }
 
         function rejectEvent(event) {
+            var index = calendarService.events.indexOf(event);
+            if(index >= 0) {
+                calendarService.events.splice(index, 1);
+                localStorage.events = angular.toJson(calendarService.events);
+            }
+
             calendarService.rejectedEvents.push(event);
             localStorage.rejectedEvents = angular.toJson(calendarService.rejectedEvents);
+        }
+
+        function clearAll() {
+            console.log('clear');
+            localStorage.clear();
+            calendarService.events = [];
+            calendarService.rejectedEvents = [];
+            console.log(localStorage);
         }
 
     });
