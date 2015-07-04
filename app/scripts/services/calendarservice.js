@@ -12,7 +12,7 @@ angular.module('datenightApp')
 
         var events;
 
-         localStorage.events = angular.toJson([]);
+         // localStorage.events = angular.toJson([]);
         if (localStorage.events) {
             events = angular.fromJson(localStorage.events);
             _.forEach(events, function(event){
