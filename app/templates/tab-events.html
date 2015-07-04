@@ -11,8 +11,11 @@
                     <img class="card-image" ng-src="{{event.image}}">
                     <div class="yes-text">LIKE</div>
                 </div>
-                <div style="position: absolute;width:100%;bottom:0;background-color:white;padding:20px;">
-                    {{ event.title }} {{event.price}}
+                <div style="position: absolute;width:100%;bottom:0;background-color:white;padding:20px; font-family:signika;">
+                    <div style=" font-weight: bold; font-size: 1.5em;">{{ event.title }}</div>
+                    <div style="margin: 10px 0; font-size:1.05em;">
+                        <span style="font-weight:bold;"> Price: </span><span>{{event.price}}</span>
+                    </div>
                     <div ng-show="event.venue.Rating > 2">
                         <img class="" src="images/wheelchair.png" style="width:20px; height:20px;">
                     </div>
