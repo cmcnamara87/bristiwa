@@ -8,7 +8,8 @@
  * Controller of the datenightApp
  */
 angular.module('datenightApp')
-    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService, eventsService) {
+    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService, eventsService,
+        $ionicLoading) {
 
         var vm = this;
         vm.hello = 'world';
@@ -31,7 +32,7 @@ angular.module('datenightApp')
         var cardIndex = 0;
 
         $scope.addCard = function() {
-            if(cardIndex >= eventsService.events.length) {
+            if (cardIndex >= eventsService.events.length) {
                 return;
             }
             var nextCard = eventsService.events[cardIndex++];
@@ -52,7 +53,7 @@ angular.module('datenightApp')
             $scope.addCard();
         };
 
-        
+
         activate();
 
         ////
@@ -60,7 +61,7 @@ angular.module('datenightApp')
         function activate() {
             vm.eventsService = eventsService;
             getEvents().then(function() {
-                for(var i = 0; i < 3; i++) {
+                for (var i = 0; i < 3; i++) {
                     $scope.addCard();
                 }
             });
@@ -100,6 +101,9 @@ angular.module('datenightApp')
         }
 
         function getEvents() {
+            $ionicLoading.show({
+                template: '<ion-spinner icon="bubbles" class="spinner-balanced"></ion-spinner> <br/> <div>Loading...</div>'
+            });
             var rss = 'http://www.trumba.com/calendars/visble-ink.rss';
             // var query = 'select * from rss where url="' + rss + '"';
 
@@ -125,12 +129,12 @@ angular.module('datenightApp')
                 var events = _.map(response.data.query.results.item, function(item) {
                     var desc = item.description[0];
                     var parts = desc.split('src="');
-                    if(parts.length) {
-                        var image = (parts[1].split('"'))[0];    
+                    if (parts.length) {
+                        var image = (parts[1].split('"'))[0];
                     } else {
                         var image = '';
                     }
-                    
+
                     return {
                         title: item.title,
                         image: image,
@@ -144,6 +148,7 @@ angular.module('datenightApp')
                     };
 
                 });
+                $ionicLoading.hide();
                 return eventsService.addEvents(events);
             });
         }
