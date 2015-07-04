@@ -8,17 +8,19 @@
  * Controller of the datenightApp
  */
 angular.module('datenightApp')
-    .controller('EventsCtrl', function ($http, $scope, TDCardDelegate, calendarService) {
+    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService) {
 
         var vm = this;
         vm.hello = 'world';
 
 
-        var cardTypes = [
-            { image: 'https://raw.githubusercontent.com/driftyco/ionic-ion-tinder-cards/master/demo/ben.png' },
-            { image: 'https://raw.githubusercontent.com/driftyco/ionic-ion-tinder-cards/master/demo/ben.png' },
-            { image: 'https://raw.githubusercontent.com/driftyco/ionic-ion-tinder-cards/master/demo/ben.png' },
-        ];
+        var cardTypes = [{
+            image: 'https://raw.githubusercontent.com/driftyco/ionic-ion-tinder-cards/master/demo/ben.png'
+        }, {
+            image: 'https://raw.githubusercontent.com/driftyco/ionic-ion-tinder-cards/master/demo/ben.png'
+        }, {
+            image: 'https://raw.githubusercontent.com/driftyco/ionic-ion-tinder-cards/master/demo/ben.png'
+        }, ];
 
         $scope.cardDestroyed = function(index) {
             $scope.cards.splice(index, 1);
@@ -29,18 +31,20 @@ angular.module('datenightApp')
             var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
             newCard.id = Math.random();
             $scope.cards.unshift(angular.extend({}, newCard));
-        }
+        };
 
         $scope.cards = [];
-        for(var i = 0; i < 3; i++) $scope.addCard();
+        for (var i = 0; i < 3; i++) {
+            $scope.addCard();
+        }
 
-        $scope.cardSwipedLeft = function (index) {
+        $scope.cardSwipedLeft = function(index) {
             console.log('LEFT SWIPE');
             calendarService.rejectEvent(vm.events[index]);
             $scope.addCard();
         };
-        $scope.cardSwipedRight = function (index) {
-            //console.log('RIGHT SWIPE');
+        $scope.cardSwipedRight = function(index) {
+            console.log('RIGHT SWIPE');
             calendarService.addEvent(vm.events[index]);
 
             $scope.addCard();
@@ -67,7 +71,9 @@ angular.module('datenightApp')
                 var events = _.map(response.data.query.results.item, function(item) {
                     return {
                         title: item.title,
-                        image: angular.element('<div>' + item.description[0] + '</div>').find('img').attr('src')
+                        image: angular.element('<div>' + item.description[0] + '</div>').find('img').attr('src'),
+                        startDate: new Date(item.dtstart),
+                        endDate: item.dtend
                     };
                 });
                 events = _.uniq(events, 'title');
