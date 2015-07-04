@@ -7,6 +7,9 @@
         <td-cards>
             <td-card ng-repeat="event in vm.events" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
                 <h3>{{ event.title }}</h3>
+                <p>{{ event.venue.Rating }}</p>
+                <p>Name: {{ event.venueName }}</p>
+                <p>Location: {{ event.location }}</p>
                 <div class="image" ng-controller="CardCtrl">
                     <div class="no-text">NOPE</div>
 

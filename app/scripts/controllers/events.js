@@ -8,7 +8,7 @@
  * Controller of the datenightApp
  */
 angular.module('datenightApp')
-    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService) {
+    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService) {
 
         var vm = this;
         vm.hello = 'world';
@@ -58,6 +58,26 @@ angular.module('datenightApp')
             getEvents();
         }
 
+        function getVenueNameForEvent(event) {
+            var venueData = _.find(event.customfield, {
+                'name': 'Venue'
+            });
+            if(!venueData) {
+                return null;
+            }
+            return venueData.content;
+        }
+
+        function getVenueForEvent(event) {
+            var venueName = getVenueNameForEvent(event);
+            if (!venueName) {
+                return {
+                    Rating: 0
+                };
+            }
+            return venueService.getVenueByName(venueName);
+        }
+
         function getEvents() {
             var rss = 'http://www.trumba.com/calendars/visble-ink.rss';
             var query = 'select * from rss where url="' + rss + '"';
@@ -68,18 +88,24 @@ angular.module('datenightApp')
                 }
             }).then(function(response) {
 
+                var accessibleOnly = true;
                 var events = _.map(response.data.query.results.item, function(item) {
                     return {
                         title: item.title,
                         image: angular.element('<div>' + item.description[0] + '</div>').find('img').attr('src'),
-                        startDate: new Date(item.dtstart),
+                        startDate: parseDate(item.dtstart),
                         endDate: item.dtend,
-                        description: item.description
+                        description: item.description,
+                        location: item.location,
+                        venueName: getVenueNameForEvent(item),
+                        venue: getVenueForEvent(item)
                     };
                 });
+
                 events = _.uniq(events, 'title');
 
                 vm.events = _.reject(events, function(event) {
+                    console.log(event.venue.Rating);
                     return _.find(calendarService.events, 'title', event.title) ||
                         _.find(calendarService.rejectedEvents, 'title', event.title);
                 });
@@ -87,5 +113,8 @@ angular.module('datenightApp')
             });
         }
 
-
+        function parseDate(timestamp) {
+            var splitDate = timestamp.split(/[^0-9]/);
+            return new Date (splitDate[0],splitDate[1]-1,splitDate[2],splitDate[3],splitDate[4],splitDate[5]);
+        }
     });

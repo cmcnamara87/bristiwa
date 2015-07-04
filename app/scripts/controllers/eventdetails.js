@@ -12,6 +12,6 @@ angular.module('datenightApp')
 
     	$scope.event = _.find(calendarService.events, function(event) {
     		return event.title === $stateParams.eventTitle;
-    	})
+    	});
     	console.log($scope.event);
     });
