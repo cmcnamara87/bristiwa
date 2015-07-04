@@ -8,17 +8,20 @@
  * Factory in the datenightApp.
  */
 angular.module('datenightApp')
-    .factory('calendarService', function () {
+    .factory('calendarService', function() {
 
         var events;
-        if(localStorage.events) {
+
+
+        localStorage.events = angular.toJson([]);
+        if (localStorage.events) {
             events = angular.fromJson(localStorage.events);
         } else {
             events = [];
         }
 
         var rejectedEvents;
-        if(localStorage.rejectedEvents) {
+        if (localStorage.rejectedEvents) {
             rejectedEvents = angular.fromJson(localStorage.rejectedEvents);
         } else {
             rejectedEvents = [];
