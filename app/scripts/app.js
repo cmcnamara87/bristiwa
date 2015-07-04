@@ -1,3 +1,4 @@
+'use strict';
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -31,9 +32,9 @@ angular.module('datenightApp', ['ionic', 'starter.controllers', 'starter.service
 
             // setup an abstract state for the tabs directive
             .state('tab', {
-                url: "/tab",
+                url: '/tab',
                 abstract: true,
-                templateUrl: "templates/tabs.html"
+                templateUrl: 'templates/tabs.html'
             })
 
             // Each tab has its own nav history stack:
@@ -67,12 +68,12 @@ angular.module('datenightApp', ['ionic', 'starter.controllers', 'starter.service
                 }
             })
 
-            .state('tab.account', {
-                url: '/account',
+            .state('tab.calendar', {
+                url: '/calendar',
                 views: {
-                    'tab-account': {
-                        templateUrl: 'templates/tab-account.html',
-                        controller: 'AccountCtrl'
+                    'tab-calendar': {
+                        templateUrl: 'templates/tab-calendar.html',
+                        controller: 'CalendarCtrl'
                     }
                 }
             });
