@@ -12,10 +12,12 @@ angular.module('datenightApp')
 
         var events;
 
-
-        localStorage.events = angular.toJson([]);
         if (localStorage.events) {
             events = angular.fromJson(localStorage.events);
+            _.forEach(events, function(event){
+                event.startDate = new Date(event.startDate);
+                event.endDate = new Date(event.endDate);
+            });
         } else {
             events = [];
         }
@@ -23,6 +25,10 @@ angular.module('datenightApp')
         var rejectedEvents;
         if (localStorage.rejectedEvents) {
             rejectedEvents = angular.fromJson(localStorage.rejectedEvents);
+            _.forEach(rejectedEvents, function(event){
+                event.startDate = new Date(event.startDate);
+                event.endDate = new Date(event.endDate);
+            });
         } else {
             rejectedEvents = [];
         }
