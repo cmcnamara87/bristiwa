@@ -68,7 +68,7 @@ angular.module('datenightApp', ['ionic', 'starter.controllers', 'starter.service
             }
         })
         .state('tab.event-detail', {
-            url: '/eventdetail/:eventId',
+            url: '/eventdetail/:eventTitle',
             views: {
                 'tab-calendar': {
                     templateUrl: 'templates/event-detail.html',

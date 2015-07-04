@@ -6,9 +6,10 @@
                 <div class="item item-divider">
                     {{date | date:'dd/MM/yyyy'}}
                 </div>
-                <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="event in events" type="item-text-wrap" href="#/tab/eventdetail/1">
+                <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="event in events" type="item-text-wrap" href="#/tab/eventdetail/{{event.title}}">
                     <img ng-src="{{ event.image }}">
                     <h2>{{ event.title }}</h2>
+
                     <!--<p>{{chat.lastText}}</p>-->
                     <i class="icon ion-chevron-right icon-accessory"></i>
                     <ion-option-button class="button-assertive" ng-click="remove(chat)">

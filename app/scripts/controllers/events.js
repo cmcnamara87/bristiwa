@@ -73,7 +73,8 @@ angular.module('datenightApp')
                         title: item.title,
                         image: angular.element('<div>' + item.description[0] + '</div>').find('img').attr('src'),
                         startDate: new Date(item.dtstart),
-                        endDate: item.dtend
+                        endDate: item.dtend,
+                        description: item.description
                     };
                 });
                 events = _.uniq(events, 'title');

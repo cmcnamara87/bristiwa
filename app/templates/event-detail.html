@@ -1,5 +1,8 @@
-<ion-view view-title="eventasasasasa">
+<ion-view view-title="{{event.title}}">
     <ion-content>
-       event details
+       <div ng-repeat="section in event.description">
+           <div ng-bind-html="section">
+           </div>
+       </div>
     </ion-content>
 </ion-view>
