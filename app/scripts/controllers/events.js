@@ -36,11 +36,13 @@ angular.module('datenightApp')
 
         $scope.cardSwipedLeft = function (index) {
             console.log('LEFT SWIPE');
+            calendarService.rejectEvent(vm.events[index]);
             $scope.addCard();
         };
         $scope.cardSwipedRight = function (index) {
             //console.log('RIGHT SWIPE');
             calendarService.addEvent(vm.events[index]);
+
             $scope.addCard();
         };
 
@@ -71,7 +73,8 @@ angular.module('datenightApp')
                 events = _.uniq(events, 'title');
 
                 vm.events = _.reject(events, function(event) {
-                    return _.find(calendarService.events, 'title', event.title);
+                    return _.find(calendarService.events, 'title', event.title) ||
+                        _.find(calendarService.rejectedEvents, 'title', event.title);
                 });
 
             });

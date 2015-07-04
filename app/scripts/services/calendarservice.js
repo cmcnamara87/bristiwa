@@ -27,7 +27,8 @@ angular.module('datenightApp')
         var calendarService = {
             events: events,
             rejectedEvents: rejectedEvents,
-            addEvent: addEvent
+            addEvent: addEvent,
+            rejectEvent: rejectEvent
         };
 
         return calendarService;
