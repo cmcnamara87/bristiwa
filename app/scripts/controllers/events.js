@@ -12,6 +12,7 @@ angular.module('datenightApp')
 
         var vm = this;
         vm.hello = 'world';
+        vm.cards = [];
 
 
         var cardTypes = [{
@@ -23,47 +24,53 @@ angular.module('datenightApp')
         }, ];
 
         $scope.cardDestroyed = function(index) {
-            $scope.cards.splice(index, 1);
+            vm.cards.splice(index, 1);
             $scope.addCard();
         };
+
+        var cardIndex = 0;
 
         $scope.addCard = function() {
-            var newCard = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-            newCard.id = Math.random();
-            $scope.cards.unshift(angular.extend({}, newCard));
+            if(cardIndex >= eventsService.events.length) {
+                return;
+            }
+            var nextCard = eventsService.events[cardIndex++];
+            vm.cards.unshift(nextCard);
         };
-
-        $scope.cards = [];
-        for (var i = 0; i < 3; i++) {
-            $scope.addCard();
-        }
 
         $scope.cardSwipedLeft = function(index) {
             console.log('LEFT SWIPE');
-            calendarService.rejectEvent(eventsService.events[index]);
+            var event = vm.cards[index];
+            calendarService.rejectEvent(event);
             $scope.addCard();
         };
         $scope.cardSwipedRight = function(index) {
             console.log('RIGHT SWIPE');
-            calendarService.addEvent(eventsService.events[index]);
+            var event = vm.cards[index];
+            calendarService.addEvent(event);
 
             $scope.addCard();
         };
 
+        
         activate();
 
         ////
 
         function activate() {
             vm.eventsService = eventsService;
-            getEvents();
+            getEvents().then(function() {
+                for(var i = 0; i < 3; i++) {
+                    $scope.addCard();
+                }
+            });
         }
 
         function getVenueNameForEvent(event) {
             var venueData = _.find(event.customfield, {
                 'name': 'Venue'
             });
-            if(!venueData) {
+            if (!venueData) {
                 return null;
             }
             return venueData.content;
@@ -79,9 +86,34 @@ angular.module('datenightApp')
             return venueService.getVenueByName(venueName);
         }
 
+        function getPrice(event) {
+            var priceData = _.find(event.customfield, {
+                'name': 'Cost'
+            });
+            console.log(priceData);
+            if (!priceData) {
+                return {
+                    content: 'unknown'
+                };
+            }
+            return priceData.content;
+        }
+
         function getEvents() {
             var rss = 'http://www.trumba.com/calendars/visble-ink.rss';
-            var query = 'select * from rss where url="' + rss + '"';
+            // var query = 'select * from rss where url="' + rss + '"';
+
+            var template = 'http://www.trumba.com/calendars/';
+
+            var query = 'select * from rss where url in ("http://www.trumba.com/calendars/visble-ink.rss", ' +
+                '"http://www.trumba.com/calendars/south-bank.rss?filterview=south+bank&filter4=_464155_&filterfield4=22542", ' +
+                '"http://www.trumba.com/calendars/planetarium.rss", ' +
+                '"http://www.trumba.com/calendars/type.rss?filterview=movies&filter1=_178865_&filterfield1=21859", ' +
+                '"http://www.trumba.com/calendars/brisbane-kids.rss?filterview=teens", ' +
+                '"http://www.trumba.com/calendars/type.rss?filterview=festivals&filter1=_178868_&filterfield1=21859", ' +
+                '"http://www.trumba.com/calendars/king-george-sqaure.rss?filterview=KGS&filter4=_200255_&filterfield4=22542" ' +
+                ')';
+
             return $http.get('http://query.yahooapis.com/v1/public/yql', {
                 params: {
                     q: query,
@@ -91,23 +123,35 @@ angular.module('datenightApp')
 
                 var accessibleOnly = true;
                 var events = _.map(response.data.query.results.item, function(item) {
+                    var desc = item.description[0];
+                    var parts = desc.split('src="');
+                    if(parts.length) {
+                        var image = (parts[1].split('"'))[0];    
+                    } else {
+                        var image = '';
+                    }
+                    
                     return {
                         title: item.title,
-                        image: angular.element('<div>' + item.description[0] + '</div>').find('img').attr('src'),
+                        image: image,
                         startDate: parseDate(item.dtstart),
                         endDate: item.dtend,
                         description: item.description,
                         location: item.location,
                         venueName: getVenueNameForEvent(item),
-                        venue: getVenueForEvent(item)
+                        venue: getVenueForEvent(item),
+                        price: getPrice(item)
                     };
+
                 });
-                eventsService.addEvents(events);
+                return eventsService.addEvents(events);
             });
         }
 
         function parseDate(timestamp) {
             var splitDate = timestamp.split(/[^0-9]/);
-            return new Date (splitDate[0],splitDate[1]-1,splitDate[2],splitDate[3],splitDate[4],splitDate[5]);
+            var date = new Date(splitDate[0], splitDate[1] - 1, splitDate[2], splitDate[3], splitDate[4], splitDate[5]);
+            date.setHours(date.getHours() + 10);
+            return date;
         }
     });

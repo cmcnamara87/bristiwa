@@ -22,8 +22,8 @@ angular.module('datenightApp')
 
         function addEvents(events) {
             allEvents = events;
-
             filter();
+            return service.events;
         }
 
         function filter() {

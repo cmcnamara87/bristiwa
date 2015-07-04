@@ -1,49 +1,46 @@
-<ion-view view-title="Dashboard">
+<ion-view view-title="Explore">
     <ion-content class="padding">
-
-        <!--<pre>-->
-            <!--{{ vm.events | json }}-->
-        <!--</pre>-->
         <td-cards>
-            <td-card ng-repeat="event in vm.eventsService.events" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
-                <h3>{{ event.title }}</h3>
+            <td-card ng-repeat="event in vm.cards" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
+                <!-- 
                 <p>{{ event.venue.Rating }}</p>
                 <p>Name: {{ event.venueName }}</p>
-                <p>Location: {{ event.location }}</p>
+                <p>Location: {{ event.location }}</p> -->
                 <div class="image" ng-controller="CardCtrl">
                     <div class="no-text">NOPE</div>
-
-                    <img ng-src="{{event.image}}">
+                    <img class="card-image" ng-src="{{event.image}}">
                     <div class="yes-text">LIKE</div>
+                </div>
+                <div style="position: absolute;width:100%;bottom:0;background-color:white;padding:20px;">
+                    {{ event.title }} {{event.price}}
+                    <div ng-show="event.venue.Rating > 2">
+                        <img class="" src="images/wheelchair.png" style="width:20px; height:20px;">
+                    </div>
                 </div>
             </td-card>
         </td-cards>
 
-
         <!--{{ vm.hello }}-->
-
         <!--<div class="list card" ng-repeat="event in vm.events">-->
-            <!--<div class="item item-divider">{{ event.title }}</div>-->
-            <!--<div class="item item-body">-->
-
-
-            <!--</div>-->
+        <!--<div class="item item-divider">{{ event.title }}</div>-->
+        <!--<div class="item item-body">-->
+        <!--</div>-->
         <!--</div>-->
         <!--<div class="list card">-->
-            <!--<div class="item item-divider">Health</div>-->
-            <!--<div class="item item-body">-->
-                <!--<div>-->
-                    <!--You ate an apple today!-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--<div class="item item-divider">Health</div>-->
+        <!--<div class="item item-body">-->
+        <!--<div>-->
+        <!--You ate an apple today!-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <!--<div class="list card">-->
-            <!--<div class="item item-divider">Upcoming</div>-->
-            <!--<div class="item item-body">-->
-                <!--<div>-->
-                    <!--You have <b>29</b> meetings on your calendar tomorrow.-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--<div class="item item-divider">Upcoming</div>-->
+        <!--<div class="item item-body">-->
+        <!--<div>-->
+        <!--You have <b>29</b> meetings on your calendar tomorrow.-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
     </ion-content>
 </ion-view>

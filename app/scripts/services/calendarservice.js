@@ -19,6 +19,11 @@ angular.module('datenightApp')
                 event.startDate = new Date(event.startDate);
                 event.endDate = new Date(event.endDate);
             });
+            events = _.reject(events, function(event) {
+                var now = (new Date()).getTime();
+                var end = event.endDate.getTime();
+                return end < now;
+            });
         } else {
             events = [];
         }

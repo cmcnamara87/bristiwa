@@ -1,6 +1,5 @@
 <ion-view view-title="Calendar">
     <ion-content>
-        Calendar
         <ion-list>
             <div ng-repeat="(date, events) in events">
                 <div class="item item-divider">
@@ -10,7 +9,8 @@
                     <img ng-src="{{ event.image }}">
                     <h2>{{ event.title }}</h2>
 
-                    <!--<p>{{chat.lastText}}</p>-->
+                    <p>{{event.startDate | date: 'shortTime'}} - {{event.endDate | date: 'shortTime'}}</p>
+        
                     <i class="icon ion-chevron-right icon-accessory"></i>
                     <ion-option-button class="button-energized" ng-click="remove(date, event.title)">
                         Done
