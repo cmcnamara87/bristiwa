@@ -8,7 +8,7 @@
  * Controller of the datenightApp
  */
 angular.module('datenightApp')
-    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService) {
+    .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService, eventsService) {
 
         var vm = this;
         vm.hello = 'world';
@@ -40,12 +40,12 @@ angular.module('datenightApp')
 
         $scope.cardSwipedLeft = function(index) {
             console.log('LEFT SWIPE');
-            calendarService.rejectEvent(vm.events[index]);
+            calendarService.rejectEvent(eventsService.events[index]);
             $scope.addCard();
         };
         $scope.cardSwipedRight = function(index) {
             console.log('RIGHT SWIPE');
-            calendarService.addEvent(vm.events[index]);
+            calendarService.addEvent(eventsService.events[index]);
 
             $scope.addCard();
         };
@@ -55,6 +55,7 @@ angular.module('datenightApp')
         ////
 
         function activate() {
+            vm.eventsService = eventsService;
             getEvents();
         }
 
@@ -101,15 +102,7 @@ angular.module('datenightApp')
                         venue: getVenueForEvent(item)
                     };
                 });
-
-                events = _.uniq(events, 'title');
-
-                vm.events = _.reject(events, function(event) {
-                    console.log(event.venue.Rating);
-                    return _.find(calendarService.events, 'title', event.title) ||
-                        _.find(calendarService.rejectedEvents, 'title', event.title);
-                });
-
+                eventsService.addEvents(events);
             });
         }
 

@@ -77,6 +77,15 @@ angular.module('datenightApp', ['ionic', 'starter.controllers', 'starter.service
             }
         })
 
+    .state('tab.settings', {
+            url: '/settings',
+            views: {
+                'tab-settings': {
+                    templateUrl: 'templates/tab-setting.html',
+                    controller: 'SettingCtrl'
+                }
+            }
+        })
     .state('tab.calendar', {
         url: '/calendar',
         cache: false,
