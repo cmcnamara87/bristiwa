@@ -35,6 +35,18 @@ td-card.card-2 {
 }
 */
 
+tdcard {
+  margin-bottom: 20px;
+}
+.testbox {
+  position: absolute;
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+  padding: 20px;
+  border: 1px solid grey;
+  margin-top: 400px;
+}
 td-card .image {
     position: relative;
 }

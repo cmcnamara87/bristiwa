@@ -1,11 +1,5 @@
 <ion-view view-title="{{event.title}}">
     <ion-content class="padding">
-        <!-- <div ng-repeat="section in event.description"> -->
-            <div ng-bind-html="event.description[0]">
-            </div>
-        <!-- </div> -->
-        <div>
-            venue rating = {{event.venue.Rating}}
-        </div>
+        <ng-include src="'templates/details.html'"></ng-include>
     </ion-content>
 </ion-view>

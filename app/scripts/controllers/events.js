@@ -9,10 +9,17 @@
  */
 angular.module('datenightApp')
     .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService, eventsService,
-        $ionicLoading) {
+        $ionicLoading,
+        $ionicModal, $timeout) {
 
         var vm = this;
+        vm.showEventInfo = showEventInfo;
+        vm.likeEvent = likeEvent;
+        vm.nopeEvent = nopeEvent;
+        vm.manualLikeEvent = manualLikeEvent;
+        vm.manualNopeEvent = manualNopeEvent;
         vm.hello = 'world';
+
         vm.cards = [];
 
 
@@ -29,6 +36,7 @@ angular.module('datenightApp')
             $scope.addCard();
         };
 
+
         var cardIndex = 0;
 
         $scope.addCard = function() {
@@ -42,13 +50,13 @@ angular.module('datenightApp')
         $scope.cardSwipedLeft = function(index) {
             console.log('LEFT SWIPE');
             var event = vm.cards[index];
-            calendarService.rejectEvent(event);
+            nopeEvent(event);
             $scope.addCard();
         };
         $scope.cardSwipedRight = function(index) {
             console.log('RIGHT SWIPE');
             var event = vm.cards[index];
-            calendarService.addEvent(event);
+            likeEvent(event);
 
             $scope.addCard();
         };
@@ -64,6 +72,15 @@ angular.module('datenightApp')
                 for (var i = 0; i < 3; i++) {
                     $scope.addCard();
                 }
+            });
+
+
+            vm.modalScope = $scope.$new();
+            $ionicModal.fromTemplateUrl('templates/modal-event-detail.html', {
+                scope: vm.modalScope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                vm.modal = modal;
             });
         }
 
@@ -100,6 +117,16 @@ angular.module('datenightApp')
             return priceData.content;
         }
 
+        function getImageForEvent(item) {
+            var image = '';
+            var desc = item.description[0];
+            var parts = desc.split('src="');
+            if (parts.length) {
+                image = (parts[1].split('"'))[0];
+            }
+            return image;
+        }
+
         function getEvents() {
             $ionicLoading.show({
                 template: '<ion-spinner icon="bubbles" class="spinner-balanced"></ion-spinner> <br/> <div>Loading...</div>'
@@ -127,13 +154,8 @@ angular.module('datenightApp')
 
                 var accessibleOnly = true;
                 var events = _.map(response.data.query.results.item, function(item) {
-                    var desc = item.description[0];
-                    var parts = desc.split('src="');
-                    if (parts.length) {
-                        var image = (parts[1].split('"'))[0];
-                    } else {
-                        var image = '';
-                    }
+
+                    var image = getImageForEvent(item);
 
                     return {
                         title: item.title,
@@ -159,4 +181,63 @@ angular.module('datenightApp')
             date.setHours(date.getHours() + 10);
             return date;
         }
+
+        function showEventInfo() {
+            var event = getCurrentEvent();
+            vm.modalScope.event = event;
+            vm.openModal();
+        }
+        vm.openModal = function() {
+            vm.modal.show();
+        };
+        vm.closeModal = function() {
+            vm.modal.hide();
+        };
+
+        function getCurrentEvent() {
+            return vm.cards[vm.cards.length - 1];
+        }
+
+        function likeEvent(event) {
+            calendarService.addEvent(event);
+            /*
+             <button ng-click="vm.manualLikeEvent()" class="button button-balanced" style="float:left;">
+
+             </button>
+             <button ng-click="vm.showEventInfo()" class="button button-calm">
+             <i class="icon ion-information"></i>
+             </button>
+             <button ng-click="vm.manualNopeEvent()" class="button button-assertive" style="float:right;">
+             <i class="icon ion-close-round"></i>
+             </button>
+             */
+            $ionicLoading.show({
+                template: '<i class="icon ion-checkmark-round"></i>',
+                noBackdrop: true,
+                duration: 200
+            });
+        }
+        function nopeEvent(event) {
+            calendarService.rejectEvent(event);
+            $ionicLoading.show({
+                template: '<i class="icon ion-close-round"></i>',
+                noBackdrop: true,
+                duration: 200
+            });
+        }
+
+        function manualLikeEvent() {
+            var event = getCurrentEvent();
+            likeEvent(event);
+            TDCardDelegate.popCard($scope, true);
+            vm.cards.splice(vm.cards.length - 1, 1);
+            $scope.addCard();
+        }
+        function manualNopeEvent() {
+            var event = getCurrentEvent();
+            nopeEvent(event);
+            vm.cards.splice(vm.cards.length - 1, 1);
+            $scope.addCard();
+        }
+
     });
