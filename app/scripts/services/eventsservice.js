@@ -8,7 +8,7 @@
  * Factory in the datenightApp.
  */
 angular.module('datenightApp')
-    .factory('eventsService', function(calendarService) {
+    .factory('eventsService', function(calendarService, $rootScope) {
         var allEvents = [];
         var rating = 0;
 
@@ -36,6 +36,7 @@ angular.module('datenightApp')
                     _.find(calendarService.rejectedEvents, 'title', event.title);
             });
             service.events = filteredEvents;
+            $rootScope.$broadcast('events-updated');
         }
 
         function setRating(newRating) {

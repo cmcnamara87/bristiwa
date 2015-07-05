@@ -10,7 +10,7 @@
 angular.module('datenightApp')
     .controller('EventsCtrl', function($http, $scope, TDCardDelegate, calendarService, venueService, eventsService,
         $ionicLoading,
-        $ionicModal, $timeout) {
+        $ionicModal, $timeout, $rootScope) {
 
         var vm = this;
         vm.showEventInfo = showEventInfo;
@@ -68,12 +68,7 @@ angular.module('datenightApp')
 
         function activate() {
             vm.eventsService = eventsService;
-            getEvents().then(function() {
-                for (var i = 0; i < 3; i++) {
-                    $scope.addCard();
-                }
-            });
-
+            getEvents();
 
             vm.modalScope = $scope.$new();
             $ionicModal.fromTemplateUrl('templates/modal-event-detail.html', {
@@ -82,6 +77,14 @@ angular.module('datenightApp')
             }).then(function(modal) {
                 vm.modal = modal;
             });
+        }
+
+        function setupCards() {
+            vm.cards = [];
+            cardIndex = 0;
+            for (var i = 0; i < 3; i++) {
+                $scope.addCard();
+            }
         }
 
         function getVenueNameForEvent(event) {
@@ -239,5 +242,9 @@ angular.module('datenightApp')
             vm.cards.splice(vm.cards.length - 1, 1);
             $scope.addCard();
         }
+
+        $rootScope.$on('events-updated', function() {
+            setupCards();
+        });
 
     });
