@@ -12,11 +12,12 @@ angular.module('datenightApp')
 
         // $scope.events = calendarService.events;
 
+        $scope.calendarService = calendarService;
+
         $scope.events = _.groupBy(calendarService.events, function(event) {
             var startDate = getDateFromDateTime(event.startDate);
             return startDate.getTime();
         });
-        console.log($scope.events);
 
 
         function getDateFromDateTime(dateTime) {

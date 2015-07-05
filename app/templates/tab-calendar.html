@@ -1,11 +1,17 @@
 <ion-view view-title="Calendar">
     <ion-content>
         <ion-list>
+            <ion-item ng-hide="calendarService.events.length">
+                <div style="text-align: center;">
+                    <img src="images/no-calendar.svg" style="height:400px; width:100%"> 
+                    <div>Like some events to be added to your calendar..</div>
+                </div>
+            </ion-item>
             <div ng-repeat="(date, events) in events">
                 <div class="item item-divider">
                     {{date | date:'dd/MM/yyyy'}}
                 </div>
-<!--                 <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="event in events" type="item-text-wrap" href="#/tab/eventdetail/{{event.title}}">
+                <!--                 <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="event in events" type="item-text-wrap" href="#/tab/eventdetail/{{event.title}}">
                     <img ng-src="{{ event.image }}">
                     <h2>{{ event.title }}</h2>
                     <p>{{event.startDate | date: 'shortTime'}} - {{event.endDate | date: 'shortTime'}}</p>
@@ -14,7 +20,7 @@
                         Done
                     </ion-option-button>
                 </ion-item> -->
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="event in events" type="item-text-wrap" href="#/tab/eventdetail/{{event.title}}">
+                <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="event in events" type="item-text-wrap" href="#/tab/eventdetail/{{event.title}}">
                     <img ng-src="{{ event.image }}" style=" border-radius: 15px;">
                     <h2>{{ event.title }}</h2>
                     <p>{{event.startDate | date: 'shortTime'}} - {{event.endDate | date: 'shortTime'}}</p>

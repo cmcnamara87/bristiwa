@@ -35,6 +35,13 @@ angular.module('datenightApp')
                 return _.find(calendarService.events, 'title', event.title) ||
                     _.find(calendarService.rejectedEvents, 'title', event.title);
             });
+
+            filteredEvents = _.reject(filteredEvents, function(event) {
+                var now = (new Date()).getTime();
+                var end = event.endDate.getTime();
+                return end < now;
+            });
+            
             service.events = filteredEvents;
             $rootScope.$broadcast('events-updated');
         }
@@ -43,5 +50,10 @@ angular.module('datenightApp')
             rating = newRating;
             filter();
         }
+
+        $rootScope.$on('clear-all', function() {
+          console.log('clear-all');
+            filter();
+        });
 
     });

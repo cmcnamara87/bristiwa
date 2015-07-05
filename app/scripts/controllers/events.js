@@ -164,7 +164,7 @@ angular.module('datenightApp')
                         title: item.title,
                         image: image,
                         startDate: parseDate(item.dtstart),
-                        endDate: item.dtend,
+                        endDate: parseDate(item.dtend),
                         description: item.description,
                         location: item.location,
                         venueName: getVenueNameForEvent(item),
@@ -203,6 +203,7 @@ angular.module('datenightApp')
 
         function likeEvent(event) {
             calendarService.addEvent(event);
+
             /*
              <button ng-click="vm.manualLikeEvent()" class="button button-balanced" style="float:left;">
 
@@ -244,6 +245,7 @@ angular.module('datenightApp')
         }
 
         $rootScope.$on('events-updated', function() {
+            console.log('hehehe');
             setupCards();
         });
 
