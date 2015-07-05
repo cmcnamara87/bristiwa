@@ -1,5 +1,5 @@
 <ion-view view-title="Explore">
-    <ion-content class="padding">
+    <ion-content class="padding" scroll="false">
         <td-cards>
             <td-card ng-repeat="event in vm.cards" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)" class="card-{{$index}}">
                 <!-- 
