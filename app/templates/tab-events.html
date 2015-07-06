@@ -24,14 +24,14 @@
         </td-cards>
 
 
-        <div class="testbox" style="text-align: center;">
-            <button ng-click="vm.manualNopeEvent()" class="button button-assertive" style="float:left;">
+        <div class="testbox" style="text-align: center;" ng-show="vm.cards.length">
+            <button ng-click="vm.manualNopeEvent()" class="button round-button button-assertive" style="float:left;">
                 <i class="icon ion-close-round"></i>
             </button>
-            <button ng-click="vm.showEventInfo()" class="button button-calm">
+            <button ng-click="vm.showEventInfo()" class="button round-button button-calm">
                 <i class="icon ion-information"></i>
             </button>
-            <button ng-click="vm.manualLikeEvent()" class="button button-balanced" style="float:right;">
+            <button ng-click="vm.manualLikeEvent()" class="button round-button button-balanced" style="float:right;">
                 <i class="icon ion-checkmark-round"></i>
             </button>
         </div>

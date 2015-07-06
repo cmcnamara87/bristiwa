@@ -8,13 +8,16 @@
  * Factory in the datenightApp.
  */
 angular.module('datenightApp')
-    .factory('calendarService', function() {
+    .factory('calendarService', function($rootScope) {
 
         var events;
 
          // localStorage.events = angular.toJson([]);
         if (localStorage.events) {
+            //console.log('stored', localStorage.events);
             events = angular.fromJson(localStorage.events);
+            // console.log('stored events', events);
+
             _.forEach(events, function(event){
                 event.startDate = new Date(event.startDate);
                 event.endDate = new Date(event.endDate);
@@ -54,6 +57,7 @@ angular.module('datenightApp')
         function addEvent(event) {
             calendarService.events.push(event);
             localStorage.events = angular.toJson(calendarService.events);
+            console.log(localStorage.events);
         }
 
         function rejectEvent(event) {
@@ -73,6 +77,7 @@ angular.module('datenightApp')
             calendarService.events = [];
             calendarService.rejectedEvents = [];
             console.log(localStorage);
+            $rootScope.$broadcast('clear-all');
         }
 
     });
