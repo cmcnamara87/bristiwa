@@ -591,6 +591,13 @@ module.exports = function (grunt) {
             'connect:coverage:keepalive'
         ]);
 
+    grunt.registerTask('deploy', [
+        'compress',
+        'manifest',
+        'gh-pages'
+    ]);
+
+
     grunt.registerTask('default', [
         'wiredep',
         'newer:jshint',
