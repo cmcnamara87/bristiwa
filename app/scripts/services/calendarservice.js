@@ -55,6 +55,10 @@ angular.module('datenightApp')
         ////
 
         function addEvent(event) {
+            var existingEvent = _.find(calendarService.events, {'title': event.title});
+            if(existingEvent) {
+                return;
+            }
             calendarService.events.push(event);
             localStorage.events = angular.toJson(calendarService.events);
             console.log(localStorage.events);
