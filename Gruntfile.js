@@ -28,6 +28,35 @@ module.exports = function (grunt) {
             dist: 'www'
         },
 
+        manifest: {
+            generate: {
+                options: {
+                    basePath: '<%= yeoman.dist %>',
+                    cache: [],
+                    network: ['*'],
+                    //network: ['http://*', 'https://*'],
+                    //fallback: ['/ /offline.html'],
+                    //exclude: ['js/jquery.min.js'],
+                    //preferOnline: true,
+                    verbose: true,
+                    //timestamp: true,
+                    hash: true,
+                    master: ['index.html']
+                    //process: function (path) {
+                    //    return path.substring('build/'.length);
+                    //}
+                },
+                src: [
+                    'templates/*.html',
+                    'scripts/*.js',
+                    'styles/*.css',
+                    'images/*',
+                    'fonts/*'
+                ],
+                dest: '<%= yeoman.dist %>/manifest.appcache'
+            }
+        },
+
         'gh-pages': {
             options: {
                 base: '<%= yeoman.dist %>'
