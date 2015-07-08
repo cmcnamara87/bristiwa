@@ -583,7 +583,8 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'manifest'
     ]);
 
     grunt.registerTask('coverage',
@@ -593,7 +594,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('deploy', [
         'compress',
-        'manifest',
         'gh-pages'
     ]);
 
