@@ -14,9 +14,7 @@ angular.module('datenightApp')
 
          // localStorage.events = angular.toJson([]);
         if (localStorage.events) {
-            //console.log('stored', localStorage.events);
             events = angular.fromJson(localStorage.events);
-            // console.log('stored events', events);
 
             _.forEach(events, function(event){
                 event.startDate = new Date(event.startDate);
@@ -61,7 +59,6 @@ angular.module('datenightApp')
             }
             calendarService.events.push(event);
             localStorage.events = angular.toJson(calendarService.events);
-            console.log(localStorage.events);
         }
 
         function rejectEvent(event) {
@@ -76,11 +73,9 @@ angular.module('datenightApp')
         }
 
         function clearAll() {
-            console.log('clear');
             localStorage.clear();
             calendarService.events = [];
             calendarService.rejectedEvents = [];
-            console.log(localStorage);
             $rootScope.$broadcast('clear-all');
         }
 
