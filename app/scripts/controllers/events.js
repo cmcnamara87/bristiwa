@@ -111,7 +111,6 @@ angular.module('datenightApp')
             var priceData = _.find(event.customfield, {
                 'name': 'Cost'
             });
-            console.log(priceData);
             if (!priceData) {
                 return {
                     content: 'unknown'
@@ -245,7 +244,6 @@ angular.module('datenightApp')
         }
 
         $rootScope.$on('events-updated', function() {
-            console.log('hehehe');
             setupCards();
         });
 
