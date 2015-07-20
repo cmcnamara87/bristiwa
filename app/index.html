@@ -40,7 +40,24 @@
     <!-- endbuild -->
 
     <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+      <script>
+          function getScript(src, func) {
+              var script = document.createElement('script');
+              script.async = "async";
+              script.src = src;
+              if (func) {
+                  script.onload = func;
+              }
+              document.getElementsByTagName("head")[0].appendChild( script );
+          }
+
+          if ( navigator.userAgent.indexOf("iPhone") > 0 || navigator.userAgent.indexOf("iPad") > 0 || navigator.userAgent.indexOf("iPod") > 0) {
+              getScript("platforms/ios/cordova.js");
+          } else if (navigator.userAgent.indexOf("Android") > 0) {
+              getScript("platforms/android/cordova.js");
+          }
+      </script>
+      <!--<script src="cordova.js"></script>-->
 
     <!-- your app's js -->
     <!-- build:js scripts/scripts.js -->

@@ -32,7 +32,11 @@ module.exports = function (grunt) {
             generate: {
                 options: {
                     basePath: '<%= yeoman.dist %>',
-                    cache: [],
+                    cache: [
+                        'fonts/ionicons.eot?v=2.0.1',
+                        'fonts/ionicons.svg?v=2.0.1',
+                        'fonts/ionicons.ttf?v=2.0.1',
+                        'fonts/ionicons.woff?v=2.0.1'],
                     network: ['*'],
                     //network: ['http://*', 'https://*'],
                     //fallback: ['/ /offline.html'],
@@ -51,7 +55,8 @@ module.exports = function (grunt) {
                     'scripts/*.js',
                     'styles/*.css',
                     'images/*',
-                    'fonts/*'
+                    'fonts/*',
+                    'platforms/**/*.js'
                 ],
                 dest: '<%= yeoman.dist %>/manifest.appcache'
             }
@@ -301,6 +306,19 @@ module.exports = function (grunt) {
                     cwd: '.temp/<%= yeoman.images %>',
                     dest: '<%= yeoman.dist %>/<%= yeoman.images %>',
                     src: ['generated/*']
+                }]
+            },
+            cordova: {
+                files: [{
+                    expand: true,
+                    cwd: 'platforms/ios/www',
+                    dest: '<%= yeoman.dist %>/platforms/ios',
+                    src: ['*.js', 'plugins/**/*', 'cordova-js-src']
+                }, {
+                    expand: true,
+                    cwd: 'platforms/android/www',
+                    dest: '<%= yeoman.dist %>/platforms/android',
+                    src: ['*.js', 'plugins/**/*', 'cordova-js-src']
                 }]
             },
             styles: {
@@ -594,6 +612,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask('deploy', [
         'compress',
+        'ionic:build:ios',
+        //'ionic:build:android',
+        'copy:cordova',
+        'manifest',
         'gh-pages'
     ]);
 
